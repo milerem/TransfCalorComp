@@ -211,3 +211,5 @@ plt.legend()
 def antihorario(IEN):
     for elem in IEN:
         print(elem[0])
+        
+#teste GIT
