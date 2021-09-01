@@ -17,11 +17,11 @@ Created on Thu Aug 26 15:40:52 2021
 # implementar o mesmo problema para malha triangular (modificar a IEN) ✔
 # colocar espaçamento independente pra x e y ✔
 # implementar vizinho e vizinhoElem e plotar quantidade de vizinhos ✔
-
-
-
-# implementar função que analisa se todos os elementos estão no sentido horário ou anti-horário 
+# implementar função que analisa se todos os elementos estão no sentido horário ou anti-horário ✔
 # (produto vetorial de dois vetores consecutivos a partir da IEN positivo ou negativo)
+
+
+
 # plotar distribuição da área do elementos (metade do determinante entre dois vetores = metade da área do paralelograma, OU fórmula de Heron)
 # somar valores das áreas para encontrar a área do domínio
 # criar malha com gmesh e importar (ver vídeo e slides da graduação)
@@ -39,8 +39,8 @@ Ly = 1.0
 nx = 4
 ny = 4
 
-#elemento = 'quad'
-elemento = 'triangle'
+elemento = 'quad'
+#elemento = 'triangle'
 
 espacamento_em_x = 'linear'
 #espacamento_em_x = 'quadratica'
@@ -208,8 +208,47 @@ plt.hist(listaVizElem, color = 'red', edgecolor = 'black', bins = 8, label='# el
 ax.xaxis.set_major_locator(MaxNLocator(integer=True))
 plt.legend()
 
-def antihorario(IEN):
-    for elem in IEN:
-        print(elem[0])
-        
-#teste GIT
+def antihorario(IEN, elemento):
+    cross = []
+    if elemento == 'triangle':
+        for j in range(len(IEN)):
+            vector1 = [X[IEN[j][1]]-X[IEN[j][0]],Y[IEN[j][1]]-Y[IEN[j][0]]]
+            vector2 = [X[IEN[j][2]]-X[IEN[j][0]],Y[IEN[j][2]]-Y[IEN[j][0]]]
+            vector3 = [X[IEN[j][2]]-X[IEN[j][1]],Y[IEN[j][2]]-Y[IEN[j][1]]]
+            cross1=np.cross(vector1,vector2)
+            if cross1>0:
+                cross+=[True]
+            else:
+                cross+=[False]
+            cross2=np.cross(vector1,vector3)
+            if cross2>0:
+                cross+=[True]
+            else:
+                cross+=[False]
+    elif elemento == 'quad':
+        for j in range(len(IEN)):
+            vector1 = [X[IEN[j][1]]-X[IEN[j][0]],Y[IEN[j][1]]-Y[IEN[j][0]]]
+            vector2 = [X[IEN[j][2]]-X[IEN[j][1]],Y[IEN[j][2]]-Y[IEN[j][1]]]
+            vector3 = [X[IEN[j][3]]-X[IEN[j][2]],Y[IEN[j][3]]-Y[IEN[j][2]]]
+            vector4 = [X[IEN[j][0]]-X[IEN[j][3]],Y[IEN[j][0]]-Y[IEN[j][3]]]
+        cross1=np.cross(vector1,vector2)
+        if cross1>0:
+            cross+=[True]
+        else:
+            cross+=[False]
+        cross2=np.cross(vector2,vector3)
+        if cross2>0:
+            cross+=[True]
+        else:
+            cross+=[False]
+        cross3=np.cross(vector3,vector4)
+        if cross3>0:
+            cross+=[True]
+        else:
+            cross+=[False]
+    if False in cross:
+        return False
+    else:
+        return True
+
+print(antihorario(IEN, elemento)) 
